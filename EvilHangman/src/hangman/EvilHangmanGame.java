@@ -2,6 +2,7 @@ package hangman;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.lang.reflect.Array;
 import java.util.*;
 
 import static java.lang.Character.isLetter;
@@ -11,6 +12,7 @@ public class EvilHangmanGame implements IEvilHangmanGame{
     private Integer numGuessesLeft;
     private ArrayList<Character> usedGuesses;
     private Map<Pattern, Set<String>> myMap;
+    private StringBuilder masterSb;
     private boolean done;
 
     public EvilHangmanGame(int guesses) {
@@ -18,12 +20,14 @@ public class EvilHangmanGame implements IEvilHangmanGame{
         numGuessesLeft = guesses;
         usedGuesses = new ArrayList<>();
         myMap = new HashMap<>();
+        masterSb = new StringBuilder();
         done = false;
     }
     @Override
     public void startGame(File dictionary, int wordLength) {
         try {
             Scanner scanner = new Scanner(dictionary);
+            InitializeMasterSb(wordLength);
             while(scanner.hasNext()) {
                 scanner.useDelimiter("((#[^\\n]*\\n)|(\\s+))+");
                 String myWord = scanner.next();
@@ -39,19 +43,76 @@ public class EvilHangmanGame implements IEvilHangmanGame{
          char guess = PrintTurnInfo();
          try {
              makeGuess(guess);
+             Integer numFound = FoundLetter();
+             if(numFound > 0) {
+                 //return index arraylist so we can see where we should add them in the stringbuilder
+                 System.out.println("Yes, there is " + numFound + " " + guess);
+             }
+             else {
+                 numGuessesLeft--;
+                 System.out.println("Sorry, there are no " + guess + "'s");
+             }
          }catch (GuessAlreadyMadeException e) {
              e.printStackTrace();
          }
 
 
 
-
             if(numGuessesLeft == 0) {
                 done = true;
+            }
+            else if (GuessedCorrectWord()) {
+                System.out.println("You Win!");
+                return;
             }
         }
     }
 
+    public boolean GuessedCorrectWord() {
+        for (int i = 0; i < masterSb.length(); i++) {
+            if (masterSb.charAt(i) == '-') {
+                return false;
+            }
+        }
+        return true;
+    }
+    public void InitializeMasterSb(int wordLength) {
+        masterSb.setLength(wordLength);
+        for (int i = 0; i < wordLength; i++) {
+            masterSb.setCharAt(i, '-');
+        }
+    }
+    public Integer FoundLetter() {
+        Character lastGuess = usedGuesses.get(usedGuesses.size() - 1);
+        ArrayList<Integer> maxVals = new ArrayList<>();
+        ArrayList<Integer> locVals = new ArrayList<>();
+        String minWord = "";
+        for(String word : myDictionary) {
+            Integer numIndices = 0;
+            if (word.indexOf(lastGuess) >= 0){
+                for (int i = 0; i < word.length(); i++) {
+                    if (word.charAt(i) == lastGuess) {
+                        numIndices++;
+                        locVals.add(i);
+                    }
+                }
+                maxVals.add(numIndices);
+            }
+            if (!maxVals.isEmpty() && Collections.min(maxVals) == numIndices) {
+                minWord = word;
+            }
+        }
+        if (maxVals.size() == 0) {
+            return 0;
+        }
+        for (int i = 0; i < minWord.length(); i++) {
+            if (minWord.charAt(i) == lastGuess) {
+                masterSb.setCharAt(i, lastGuess);
+            }
+        }
+
+        return Collections.min(maxVals);
+    }
     @Override
     public Set<String> makeGuess(char guess) throws GuessAlreadyMadeException {
        // Set<String> myNewDictionary = new LinkedHashSet<>();
@@ -83,8 +144,9 @@ public class EvilHangmanGame implements IEvilHangmanGame{
 
         }
         this.myDictionary = RunEvilAlgorithm();
+        this.myMap = new HashMap<>();
         //make a function to run evil algorithm
-        return null;
+        return myDictionary;
     }
 
     public Set<String> RunEvilAlgorithm() {
@@ -117,7 +179,7 @@ public class EvilHangmanGame implements IEvilHangmanGame{
             }
         }
         else if (myCandidateMap.size() > 1) {
-
+            return RunFirstPriority(myCandidateMap);
         }
         return null;
     }
@@ -125,26 +187,156 @@ public class EvilHangmanGame implements IEvilHangmanGame{
     public Set<String> RunFirstPriority(Map<Pattern, Set<String>> mapCandidate) {
         Map<Pattern, Set<String>> myMapCopy = mapCandidate;
         Map<Pattern, Set<String>> myCandidateMap = new HashMap<>();
-        Character lastGuess = usedGuesses.get(usedGuesses.size());
+        Character lastGuess = usedGuesses.get(usedGuesses.size() - 1);
         for(Map.Entry<Pattern, Set<String>> entry : myMapCopy.entrySet()){
             Pattern myPattern = entry.getKey();
             Set<String> myStrings = entry.getValue();
-            for(String word : myStrings) {
-                if(!(word.indexOf(lastGuess) >= 0)) { //letter not found
-                    myCandidateMap.
-                }
+            if(myPattern.ReturnIndices().size() == 0) {
+                myCandidateMap.put(myPattern, myStrings);
             }
         }
+        if (myCandidateMap.size() == 0) {
+            return RunSecondPriority(mapCandidate);
+        }
+        else if (myCandidateMap.size() == 1) {
+            for (Set<String> myStringSet : myCandidateMap.values()) {
+                //this.myMap = myCandidateMap;
+                return myStringSet;
+            }
+        }
+        else if (myCandidateMap.size() > 1) {
+            return RunSecondPriority(myCandidateMap);
+        }
+        return null;
+    }
+
+    public Set<String> RunSecondPriority(Map<Pattern, Set<String>> mapCandidate) {
+        Map<Pattern, Set<String>> mapCandidateNew = new HashMap<>();
+        int maxValue = 0;
+        //choose the one with the fewest guessed letters
+        //which means choose the one with the biggest size after subtracting guessed letters
+
+        for (Map.Entry<Pattern, Set<String>> entry : mapCandidate.entrySet()) {
+            Pattern myPattern = entry.getKey();
+            Set<String> myStrings = entry.getValue();
+            int numUnguessedLetters = this.masterSb.length() - myPattern.ReturnIndices().size();
+            if(maxValue < numUnguessedLetters) {
+                maxValue = numUnguessedLetters;
+                mapCandidateNew = new HashMap<>();
+                mapCandidateNew.put(myPattern, myStrings);
+            }
+            else if (maxValue > numUnguessedLetters) {
+                //do nothing
+            }
+            else if (maxValue == numUnguessedLetters) {
+                mapCandidateNew.put(myPattern, myStrings);
+            }
+        }
+        if (mapCandidateNew.size() == 0) {
+            return RunThirdPriority(mapCandidate);
+        }
+        else if (mapCandidateNew.size() == 1) {
+            for (Set<String> myStringSet : mapCandidateNew.values()) {
+                return myStringSet;
+            }
+        }
+        else if(mapCandidateNew.size() > 2) {
+            return RunThirdPriority(mapCandidateNew);
+        }
+        return null;
+    }
+
+    public Set<String> RunThirdPriority(Map<Pattern, Set<String>> mapCandidate) {
+        Map<Pattern, Set<String>> mapCandidateNew = new HashMap<>();
+        int maxValue = 0;
+        Character lastGuess = usedGuesses.get(usedGuesses.size() - 1);
+        for (Map.Entry<Pattern, Set<String>> entry : mapCandidate.entrySet()) {
+            Pattern myPattern = entry.getKey();
+            Set<String> myStrings = entry.getValue();
+            ArrayList<Integer> myIndices = myPattern.ReturnIndices();
+            for (Integer index : myIndices) {
+                if (maxValue < index) {
+                    maxValue = index;
+                    mapCandidateNew = new HashMap<>();
+                    mapCandidateNew.put(myPattern, myStrings);
+                }
+                else if (maxValue > index) {
+                    //do nothing
+                }
+                else if (maxValue == index) {
+                    mapCandidateNew.put(myPattern, myStrings);
+                }
+            }
+            ArrayList<Integer> maxValArray = new ArrayList<>();
+            maxValArray.add(maxValue);
+            if (mapCandidateNew.size() == 0) {
+                return RunFourthPriority(mapCandidate, maxValArray);
+            }
+            else if (mapCandidateNew.size() == 1) {
+                for (Set<String> myStringSet : mapCandidateNew.values()) {
+                    return myStringSet;
+                }
+            }
+            else if(mapCandidateNew.size() > 2) {
+                return RunFourthPriority(mapCandidateNew, maxValArray);
+            }
+
+        }
+        return null;
+    }
+
+    public Set<String> RunFourthPriority(Map<Pattern, Set<String>> mapCandidate, ArrayList<Integer> avoidVals) {
+        Map<Pattern, Set<String>> mapCandidateNew = new HashMap<>();
+        int maxValue = 0;
+        Character lastGuess = usedGuesses.get(usedGuesses.size() - 1);
+        for (Map.Entry<Pattern, Set<String>> entry : mapCandidate.entrySet()) {
+            Pattern myPattern = entry.getKey();
+            Set<String> myStrings = entry.getValue();
+            ArrayList<Integer> myIndices = myPattern.ReturnIndices();
+            myIndices.removeAll(avoidVals);
+            for (Integer index : myIndices) {
+                if (maxValue < index) {
+                    maxValue = index;
+                    mapCandidateNew = new HashMap<>();
+                    mapCandidateNew.put(myPattern, myStrings);
+                }
+                else if (maxValue > index) {
+                    //do nothing
+                }
+                else if (maxValue == index) {
+                    mapCandidateNew.put(myPattern, myStrings);
+                }
+            }
+            avoidVals.add(maxValue);
+            if (mapCandidateNew.size() == 1) {
+                for (Set<String> myStringSet : mapCandidateNew.values()) {
+                    return myStringSet;
+                }
+            }
+            else if(mapCandidateNew.size() > 2) {
+                return RunFourthPriority(mapCandidateNew, avoidVals);
+            }
+        }
+        return null;
     }
 
     public void DeleteGame() {
         //Run This to clear everything from the last game
     }
 
+
+    public String PrintUsedGuesses() {
+        StringBuilder OSS = new StringBuilder();
+        for(Character letter: usedGuesses) {
+            OSS.append(letter + " ");
+        }
+        return OSS.toString();
+    }
+
     public char PrintTurnInfo() {
         System.out.println("You have " + numGuessesLeft + " guesses left");
-        System.out.println("Used letters: ");//used letters go here
-        System.out.println("Word: ----"); //Need the dashes here
+        System.out.println("Used letters: " + PrintUsedGuesses());//used letters go here
+        System.out.println("Word: " + masterSb.toString()); //Need the dashes here
         System.out.println("Enter guess: ");
         String response = "";
         boolean validInput = false;

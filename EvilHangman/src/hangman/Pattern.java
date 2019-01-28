@@ -15,13 +15,13 @@ public class Pattern {
         myToStringBuild = new StringBuilder();
     }
     public void createPattern(char letter) {
-        StringBuilder word = new StringBuilder(sampleWord);
-        for (int i = 0; i < word.length(); i++) {
-            if(word.charAt(i) == letter) {
+         myToStringBuild = new StringBuilder(sampleWord);
+        for (int i = 0; i < sampleWord.length(); i++) {
+            if(myToStringBuild.charAt(i) == letter) {
 
             }
             else {
-                word.setCharAt(i, '-');
+                myToStringBuild.setCharAt(i, '-');
             }
         }
     }
@@ -30,6 +30,7 @@ public class Pattern {
         return myIndices;
     }
     public String toString() {
+
         return myToStringBuild.toString();
     }
 }
