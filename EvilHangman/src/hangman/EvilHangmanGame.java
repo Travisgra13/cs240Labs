@@ -23,6 +23,37 @@ public class EvilHangmanGame implements IEvilHangmanGame{
         masterSb = new StringBuilder();
         done = false;
     }
+    public Set<String> GetMyDictionary() {
+        return myDictionary;
+    }
+    public Integer GetNumGuessesLeft() {
+        return numGuessesLeft;
+    }
+    public TreeSet<Character> GetUsedGuesses() {
+        return usedGuesses;
+    }
+    public Character GetLastGuess() {
+        return lastGuess;
+    }
+    public void SetLastGuess(Character character) {
+        this.lastGuess = character;
+    }
+    public void DecreaseNumGuesses() {
+        numGuessesLeft--;
+    }
+    public void SetDoneStatus() {
+        done = true;
+    }
+    public Map<Pattern, Set<String>> GetMyMap() {
+        return myMap;
+    }
+    public StringBuilder GetStringBuilder() {
+        return masterSb;
+    }
+    public boolean GetDoneStatus() {
+        return done;
+    }
+
     @Override
     public void startGame(File dictionary, int wordLength) {
         try {
@@ -41,39 +72,6 @@ public class EvilHangmanGame implements IEvilHangmanGame{
             }
         } catch (FileNotFoundException e) {
             e.printStackTrace();
-        }
-
-        while(!done) {
-         char guess = PrintTurnInfo();
-         this.lastGuess = guess;
-         try {
-             makeGuess(guess);
-             Integer numFound = FoundLetter();
-             if(numFound > 0) {
-                 if (GuessedCorrectWord()) {
-                     System.out.println("You Win!");
-                     System.out.println("The word was: " + masterSb.toString());
-                     return;
-                 }
-                 //return index arraylist so we can see where we should add them in the stringbuilder
-                 else {
-                     System.out.println("Yes, there is " + numFound + " " + guess);
-                 }
-             }
-             else {
-                 numGuessesLeft--;
-                 if(numGuessesLeft == 0) {
-                     System.out.println("You lose!");
-                     System.out.println("The word was: " + PrintLostPrompt());
-                     done = true;
-                 }
-                 else {
-                     System.out.println("Sorry, there are no " + guess + "'s");
-                 }
-             }
-         }catch (GuessAlreadyMadeException e) {
-             e.printStackTrace();
-         }
         }
         return;
     }
@@ -354,7 +352,7 @@ public class EvilHangmanGame implements IEvilHangmanGame{
         return OSS.toString();
     }
 
-    public char PrintTurnInfo() {
+    public char PrintTurnInfo() throws GuessAlreadyMadeException{
         System.out.println("You have " + numGuessesLeft + " guesses left");
         System.out.println("Used letters: " + PrintUsedGuesses());//used letters go here
         System.out.println("Word: " + masterSb.toString()); //Need the dashes here
@@ -363,20 +361,23 @@ public class EvilHangmanGame implements IEvilHangmanGame{
         boolean validInput = false;
         Character myGuess = null;
         while (!validInput) {
-            Scanner in = new Scanner(System.in);
-            response = in.next(); //enter response into repos
-            response = response.toLowerCase();
-            //check what happens if it is an empty string
-            myGuess = response.charAt(0);
-            if (response.equals("") || !Character.isLetter(myGuess) || response.length() != 1) {
-                System.out.println("Invalid Input");
-            }
-            else if (usedGuesses.contains(myGuess)) {
+            try {
+                Scanner in = new Scanner(System.in);
+                response = in.next(); //enter response into repos
+                response = response.toLowerCase();
+                //check what happens if it is an empty string
+                myGuess = response.charAt(0);
+                if (response.equals("") || !Character.isLetter(myGuess) || response.length() != 1) {
+                    System.out.println("Invalid Input");
+                } else if (usedGuesses.contains(myGuess)) {
+                    throw new GuessAlreadyMadeException();
+                    //System.out.println("You already used that letter");
+                    //figure out how to throw the exception
+                } else {
+                    validInput = true;
+                }
+            }catch (GuessAlreadyMadeException ex) {
                 System.out.println("You already used that letter");
-                //figure out how to throw the exception
-            }
-            else {
-                validInput = true;
             }
         }
         usedGuesses.add(myGuess);
