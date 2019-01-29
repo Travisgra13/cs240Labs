@@ -2,6 +2,7 @@ package hangman;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.lang.reflect.Array;
 import java.util.*;
 
@@ -10,7 +11,8 @@ import static java.lang.Character.isLetter;
 public class EvilHangmanGame implements IEvilHangmanGame{
     private Set<String> myDictionary;
     private Integer numGuessesLeft;
-    private ArrayList<Character> usedGuesses;
+    private TreeSet<Character> usedGuesses;
+    private Character lastGuess;
     private Map<Pattern, Set<String>> myMap;
     private StringBuilder masterSb;
     private boolean done;
@@ -18,7 +20,7 @@ public class EvilHangmanGame implements IEvilHangmanGame{
     public EvilHangmanGame(int guesses) {
         myDictionary = new LinkedHashSet<>();
         numGuessesLeft = guesses;
-        usedGuesses = new ArrayList<>();
+        usedGuesses = new TreeSet<>();
         myMap = new HashMap<>();
         masterSb = new StringBuilder();
         done = false;
@@ -35,39 +37,55 @@ public class EvilHangmanGame implements IEvilHangmanGame{
                     myDictionary.add(myWord.toLowerCase());
                 }
             }
+            if (myDictionary.size() == 0) {
+                System.out.println("File is without String Tokens");
+                return;
+            }
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
 
         while(!done) {
          char guess = PrintTurnInfo();
+         this.lastGuess = guess;
          try {
              makeGuess(guess);
              Integer numFound = FoundLetter();
              if(numFound > 0) {
+                 if (GuessedCorrectWord()) {
+                     System.out.println("You Win!");
+                     System.out.println("The word was: " + masterSb.toString());
+                     return;
+                 }
                  //return index arraylist so we can see where we should add them in the stringbuilder
-                 System.out.println("Yes, there is " + numFound + " " + guess);
+                 else {
+                     System.out.println("Yes, there is " + numFound + " " + guess);
+                 }
              }
              else {
                  numGuessesLeft--;
-                 System.out.println("Sorry, there are no " + guess + "'s");
+                 if(numGuessesLeft == 0) {
+                     System.out.println("You lose!");
+                     System.out.println("The word was: " + PrintLostPrompt());
+                     done = true;
+                 }
+                 else {
+                     System.out.println("Sorry, there are no " + guess + "'s");
+                 }
              }
          }catch (GuessAlreadyMadeException e) {
              e.printStackTrace();
          }
-
-
-
-            if(numGuessesLeft == 0) {
-                done = true;
-            }
-            else if (GuessedCorrectWord()) {
-                System.out.println("You Win!");
-                return;
-            }
         }
+        return;
     }
 
+    public String PrintLostPrompt() {
+        for (String word : this.myDictionary) {
+            return word;
+        }
+        return null;
+    }
     public boolean GuessedCorrectWord() {
         for (int i = 0; i < masterSb.length(); i++) {
             if (masterSb.charAt(i) == '-') {
@@ -83,7 +101,6 @@ public class EvilHangmanGame implements IEvilHangmanGame{
         }
     }
     public Integer FoundLetter() {
-        Character lastGuess = usedGuesses.get(usedGuesses.size() - 1);
         ArrayList<Integer> maxVals = new ArrayList<>();
         ArrayList<Integer> locVals = new ArrayList<>();
         String minWord = "";
@@ -187,7 +204,6 @@ public class EvilHangmanGame implements IEvilHangmanGame{
     public Set<String> RunFirstPriority(Map<Pattern, Set<String>> mapCandidate) {
         Map<Pattern, Set<String>> myMapCopy = mapCandidate;
         Map<Pattern, Set<String>> myCandidateMap = new HashMap<>();
-        Character lastGuess = usedGuesses.get(usedGuesses.size() - 1);
         for(Map.Entry<Pattern, Set<String>> entry : myMapCopy.entrySet()){
             Pattern myPattern = entry.getKey();
             Set<String> myStrings = entry.getValue();
@@ -240,7 +256,7 @@ public class EvilHangmanGame implements IEvilHangmanGame{
                 return myStringSet;
             }
         }
-        else if(mapCandidateNew.size() > 2) {
+        else if(mapCandidateNew.size() >= 2) {
             return RunThirdPriority(mapCandidateNew);
         }
         return null;
@@ -249,7 +265,6 @@ public class EvilHangmanGame implements IEvilHangmanGame{
     public Set<String> RunThirdPriority(Map<Pattern, Set<String>> mapCandidate) {
         Map<Pattern, Set<String>> mapCandidateNew = new HashMap<>();
         int maxValue = 0;
-        Character lastGuess = usedGuesses.get(usedGuesses.size() - 1);
         for (Map.Entry<Pattern, Set<String>> entry : mapCandidate.entrySet()) {
             Pattern myPattern = entry.getKey();
             Set<String> myStrings = entry.getValue();
@@ -277,7 +292,7 @@ public class EvilHangmanGame implements IEvilHangmanGame{
                     return myStringSet;
                 }
             }
-            else if(mapCandidateNew.size() > 2) {
+            else if(mapCandidateNew.size() >= 2) {
                 return RunFourthPriority(mapCandidateNew, maxValArray);
             }
 
@@ -288,7 +303,6 @@ public class EvilHangmanGame implements IEvilHangmanGame{
     public Set<String> RunFourthPriority(Map<Pattern, Set<String>> mapCandidate, ArrayList<Integer> avoidVals) {
         Map<Pattern, Set<String>> mapCandidateNew = new HashMap<>();
         int maxValue = 0;
-        Character lastGuess = usedGuesses.get(usedGuesses.size() - 1);
         for (Map.Entry<Pattern, Set<String>> entry : mapCandidate.entrySet()) {
             Pattern myPattern = entry.getKey();
             Set<String> myStrings = entry.getValue();
@@ -313,7 +327,7 @@ public class EvilHangmanGame implements IEvilHangmanGame{
                     return myStringSet;
                 }
             }
-            else if(mapCandidateNew.size() > 2) {
+            else if(mapCandidateNew.size() >= 2) {
                 return RunFourthPriority(mapCandidateNew, avoidVals);
             }
         }
@@ -321,6 +335,11 @@ public class EvilHangmanGame implements IEvilHangmanGame{
     }
 
     public void DeleteGame() {
+        myDictionary.clear();
+        usedGuesses.clear();
+        myMap.clear();
+        masterSb.setLength(0);
+        done = false;
         //Run This to clear everything from the last game
     }
 
@@ -347,7 +366,7 @@ public class EvilHangmanGame implements IEvilHangmanGame{
             response = response.toLowerCase();
             //check what happens if it is an empty string
             myGuess = response.charAt(0);
-            if (response.equals("") || !Character.isLetter(myGuess)) {
+            if (response.equals("") || !Character.isLetter(myGuess) || response.length() != 1) {
                 System.out.println("Invalid Input");
             }
             else if (usedGuesses.contains(myGuess)) {
