@@ -14,7 +14,7 @@ public class Main {
             IEvilHangmanGame myGame = new EvilHangmanGame(guesses);
             myGame.startGame(new File(dictionaryFile), wordLength);
             ((EvilHangmanGame) myGame).DeleteGame();
-        }catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }

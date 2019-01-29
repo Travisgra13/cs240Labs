@@ -3,10 +3,8 @@ package hangman;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.lang.reflect.Array;
 import java.util.*;
 
-import static java.lang.Character.isLetter;
 
 public class EvilHangmanGame implements IEvilHangmanGame{
     private Set<String> myDictionary;
@@ -33,12 +31,12 @@ public class EvilHangmanGame implements IEvilHangmanGame{
             while(scanner.hasNext()) {
                 scanner.useDelimiter("((#[^\\n]*\\n)|(\\s+))+");
                 String myWord = scanner.next();
-                if (myWord.length() == wordLength) {
+                if (myWord.length() == wordLength && isAlpha(myWord)) {
                     myDictionary.add(myWord.toLowerCase());
                 }
             }
             if (myDictionary.size() == 0) {
-                System.out.println("File is without String Tokens");
+                System.out.println("File is without String Tokens of Specified Size");
                 return;
             }
         } catch (FileNotFoundException e) {
@@ -78,6 +76,10 @@ public class EvilHangmanGame implements IEvilHangmanGame{
          }
         }
         return;
+    }
+
+    public boolean isAlpha(String name) {
+        return name.matches("[a-zA-Z]+");
     }
 
     public String PrintLostPrompt() {
