@@ -1,7 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="71f6c237-b10a-41a0-9684-ec9c6a149f7c" name="Default Changelist" comment="" />
+    <list default="true" id="71f6c237-b10a-41a0-9684-ec9c6a149f7c" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/../EvilHangman/src/hangman/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../EvilHangman/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../EvilHangman/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../EvilHangman/out/production/EvilHangman/hangman/EvilHangmanGame.class" beforeDir="false" afterPath="$PROJECT_DIR$/../EvilHangman/out/production/EvilHangman/hangman/EvilHangmanGame.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../EvilHangman/out/production/EvilHangman/hangman/Main.class" beforeDir="false" afterPath="$PROJECT_DIR$/../EvilHangman/out/production/EvilHangman/hangman/Main.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../EvilHangman/src/hangman/EvilHangmanGame.java" beforeDir="false" afterPath="$PROJECT_DIR$/../EvilHangman/src/hangman/EvilHangmanGame.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../EvilHangman/src/hangman/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/../EvilHangman/src/hangman/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../EvilHangman/test.txt" beforeDir="false" afterPath="$PROJECT_DIR$/../EvilHangman/test.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/spell/Pair.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/spell/Pair.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/spell/SpellCorrector.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/spell/SpellCorrector.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/spell/Trie.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/spell/Trie.java" afterDir="false" />
+    </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -25,11 +37,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/spell/SpellCorrector.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="102">
-              <caret line="68" column="5" selection-start-line="68" selection-start-column="5" selection-end-line="68" selection-end-column="5" />
+            <state relative-caret-position="3655">
+              <caret line="215" column="5" selection-start-line="215" selection-start-column="5" selection-end-line="215" selection-end-column="5" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -40,8 +52,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/spell/Pair.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="34">
-              <caret line="2" column="19" selection-start-line="2" selection-start-column="19" selection-end-line="2" selection-end-column="19" />
+            <state relative-caret-position="68">
+              <caret line="4" column="16" selection-start-line="4" selection-start-column="16" selection-end-line="4" selection-end-column="16" />
             </state>
           </provider>
         </entry>
@@ -55,13 +67,15 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/spell/Trie.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1632">
-              <caret line="103" column="34" selection-start-line="103" selection-start-column="34" selection-end-line="103" selection-end-column="34" />
+            <state relative-caret-position="-1938">
+              <caret line="15" column="10" lean-forward="true" selection-start-line="15" selection-start-column="10" selection-end-line="15" selection-end-column="10" />
               <folding>
                 <element signature="imports" expanded="true" />
+                <element signature="e#3035#3036#0" expanded="true" />
+                <element signature="e#3078#3079#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -92,17 +106,20 @@
       <find>candidate</find>
     </findStrings>
   </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+  </component>
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
         <option value="$PROJECT_DIR$/src/ISpellCorrector.java" />
         <option value="$PROJECT_DIR$/src/SpellCorrector.java" />
         <option value="$PROJECT_DIR$/src/Trie.java" />
-        <option value="$PROJECT_DIR$/src/spell/Pair.java" />
         <option value="$PROJECT_DIR$/src/spell/ITrie.java" />
-        <option value="$PROJECT_DIR$/src/spell/Trie.java" />
         <option value="$PROJECT_DIR$/src/spell/Main.java" />
+        <option value="$PROJECT_DIR$/src/spell/Pair.java" />
         <option value="$PROJECT_DIR$/src/spell/SpellCorrector.java" />
+        <option value="$PROJECT_DIR$/src/spell/Trie.java" />
       </list>
     </option>
   </component>
@@ -111,13 +128,12 @@
     <option name="width" value="1382" />
     <option name="height" value="744" />
   </component>
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectView">
     <navigator proportions="" version="1">
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="PackagesPane" />
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -140,11 +156,13 @@
           <select />
         </subPane>
       </pane>
+      <pane id="PackagesPane" />
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1548211358838" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../ImageEditor/src/PPMImage.java" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1549217499541" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../EvilHangman" />
     <property name="restartRequiresConfirmation" value="false" />
   </component>
   <component name="RunDashboard">
@@ -196,7 +214,7 @@
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.49878934" visible="true" weight="0.118003026" />
+      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.49878934" visible="true" weight="0.0688351" />
       <window_info id="Structure" order="1" sideWeight="0.50121063" side_tool="true" weight="0.113464445" />
       <window_info id="Image Layers" order="2" />
       <window_info id="Designer" order="3" />
@@ -263,7 +281,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/spell/SpellCorrector.java</url>
-          <line>173</line>
+          <line>175</line>
           <properties />
           <option name="timeStamp" value="101" />
         </line-breakpoint>
@@ -318,8 +336,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/spell/Pair.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="34">
-          <caret line="2" column="19" selection-start-line="2" selection-start-column="19" selection-end-line="2" selection-end-column="19" />
+        <state relative-caret-position="68">
+          <caret line="4" column="16" selection-start-line="4" selection-start-column="16" selection-end-line="4" selection-end-column="16" />
         </state>
       </provider>
     </entry>
@@ -327,16 +345,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="119">
           <caret line="7" column="4" selection-start-line="7" selection-start-column="4" selection-end-line="7" selection-end-column="4" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/spell/Trie.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1632">
-          <caret line="103" column="34" selection-start-line="103" selection-start-column="34" selection-end-line="103" selection-end-column="34" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -349,10 +357,22 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/spell/SpellCorrector.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="102">
-          <caret line="68" column="5" selection-start-line="68" selection-start-column="5" selection-end-line="68" selection-end-column="5" />
+        <state relative-caret-position="3655">
+          <caret line="215" column="5" selection-start-line="215" selection-start-column="5" selection-end-line="215" selection-end-column="5" />
           <folding>
             <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/spell/Trie.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1938">
+          <caret line="15" column="10" lean-forward="true" selection-start-line="15" selection-start-column="10" selection-end-line="15" selection-end-column="10" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#3035#3036#0" expanded="true" />
+            <element signature="e#3078#3079#0" expanded="true" />
           </folding>
         </state>
       </provider>

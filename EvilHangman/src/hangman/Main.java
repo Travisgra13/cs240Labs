@@ -7,11 +7,13 @@ import java.io.IOException;
 
 public class Main {
     public static void main(String[] args) throws IOException, GuessAlreadyMadeException {
+
         try {
             String dictionaryFile = args[0];
             Integer wordLength = Integer.parseInt(args[1]);
             Integer guesses = Integer.parseInt(args[2]);
-            IEvilHangmanGame myGame = new EvilHangmanGame(guesses);
+            IEvilHangmanGame myGame = new EvilHangmanGame();
+            ((EvilHangmanGame) myGame).SetNumGuesses(guesses);
             myGame.startGame(new File(dictionaryFile), wordLength);
             while (!((EvilHangmanGame) myGame).GetDoneStatus()) {
                 char guess = ((EvilHangmanGame) myGame).PrintTurnInfo();

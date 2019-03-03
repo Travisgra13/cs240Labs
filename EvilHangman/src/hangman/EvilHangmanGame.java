@@ -15,16 +15,20 @@ public class EvilHangmanGame implements IEvilHangmanGame{
     private StringBuilder masterSb;
     private boolean done;
 
-    public EvilHangmanGame(int guesses) {
+    public EvilHangmanGame() {
         myDictionary = new LinkedHashSet<>();
-        numGuessesLeft = guesses;
+        numGuessesLeft = 0;
         usedGuesses = new TreeSet<>();
         myMap = new HashMap<>();
         masterSb = new StringBuilder();
         done = false;
     }
+
     public Set<String> GetMyDictionary() {
         return myDictionary;
+    }
+    public void SetNumGuesses(int num) {
+        numGuessesLeft = num;
     }
     public Integer GetNumGuessesLeft() {
         return numGuessesLeft;
@@ -102,7 +106,7 @@ public class EvilHangmanGame implements IEvilHangmanGame{
     }
     public Integer FoundLetter() {
         ArrayList<Integer> maxVals = new ArrayList<>();
-        ArrayList<Integer> locVals = new ArrayList<>();
+       // ArrayList<Integer> locVals = new ArrayList<>();
         String minWord = "";
         for(String word : myDictionary) {
             Integer numIndices = 0;
@@ -110,7 +114,7 @@ public class EvilHangmanGame implements IEvilHangmanGame{
                 for (int i = 0; i < word.length(); i++) {
                     if (word.charAt(i) == lastGuess) {
                         numIndices++;
-                        locVals.add(i);
+                        //locVals.add(i);
                     }
                 }
                 maxVals.add(numIndices);
@@ -133,6 +137,7 @@ public class EvilHangmanGame implements IEvilHangmanGame{
     @Override
     public Set<String> makeGuess(char guess) throws GuessAlreadyMadeException {
        // Set<String> myNewDictionary = new LinkedHashSet<>();
+
         for(String word : myDictionary) {
             ArrayList<Integer> indices = new ArrayList<>();
             for (int i = 0; i < word.length(); i++) {
@@ -274,14 +279,13 @@ public class EvilHangmanGame implements IEvilHangmanGame{
                     maxValue = index;
                     mapCandidateNew = new HashMap<>();
                     mapCandidateNew.put(myPattern, myStrings);
-                }
-                else if (maxValue > index) {
+                } else if (maxValue > index) {
                     //do nothing
-                }
-                else if (maxValue == index) {
+                } else if (maxValue == index) {
                     mapCandidateNew.put(myPattern, myStrings);
                 }
             }
+        }
             ArrayList<Integer> maxValArray = new ArrayList<>();
             maxValArray.add(maxValue);
             if (mapCandidateNew.size() == 0) {
@@ -296,7 +300,6 @@ public class EvilHangmanGame implements IEvilHangmanGame{
                 return RunFourthPriority(mapCandidateNew, maxValArray);
             }
 
-        }
         return null;
     }
 
@@ -313,14 +316,13 @@ public class EvilHangmanGame implements IEvilHangmanGame{
                     maxValue = index;
                     mapCandidateNew = new HashMap<>();
                     mapCandidateNew.put(myPattern, myStrings);
-                }
-                else if (maxValue > index) {
+                } else if (maxValue > index) {
                     //do nothing
-                }
-                else if (maxValue == index) {
+                } else if (maxValue == index) {
                     mapCandidateNew.put(myPattern, myStrings);
                 }
             }
+        }
             avoidVals.add(maxValue);
             if (mapCandidateNew.size() == 1) {
                 for (Set<String> myStringSet : mapCandidateNew.values()) {
@@ -330,7 +332,6 @@ public class EvilHangmanGame implements IEvilHangmanGame{
             else if(mapCandidateNew.size() >= 2) {
                 return RunFourthPriority(mapCandidateNew, avoidVals);
             }
-        }
         return null;
     }
 
@@ -360,16 +361,24 @@ public class EvilHangmanGame implements IEvilHangmanGame{
         String response = "";
         boolean validInput = false;
         Character myGuess = null;
-        while (!validInput) {
+
+       /* while (!validInput) {
             try {
-                Scanner in = new Scanner(System.in);
-                response = in.next(); //enter response into repos
+               Scanner input = new Scanner(System.in);
+                response = input.nextLine();
+                //enter response into repos
                 response = response.toLowerCase();
+                if (response.isEmpty()) {
+                    System.out.println("Invalid Input");
+                    continue;
+                }
                 //check what happens if it is an empty string
                 myGuess = response.charAt(0);
                 if (response.equals("") || !Character.isLetter(myGuess) || response.length() != 1) {
                     System.out.println("Invalid Input");
-                } else if (usedGuesses.contains(myGuess)) {
+                    continue;
+                }
+                else if (usedGuesses.contains(myGuess)) {
                     throw new GuessAlreadyMadeException();
                     //System.out.println("You already used that letter");
                     //figure out how to throw the exception
@@ -381,7 +390,7 @@ public class EvilHangmanGame implements IEvilHangmanGame{
             }
         }
         usedGuesses.add(myGuess);
-        return myGuess;
+        return myGuess;*/
         //sorry or Yes there is numLetters of char
     }
 }

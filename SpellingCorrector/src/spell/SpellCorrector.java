@@ -24,6 +24,7 @@ public class SpellCorrector implements ISpellCorrector {
         }
     }
     public String suggestSimilarWord(String inputWord) {
+
         if (inputWord.equals("")) {
             return null;
         }
@@ -82,6 +83,7 @@ public class SpellCorrector implements ISpellCorrector {
         for (int l = 0; l < insertList.size(); l++) {
             mySet.add(insertList.get(l));
         }
+
     }
 
 

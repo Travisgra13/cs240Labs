@@ -16,16 +16,15 @@ public class Trie implements  ITrie{
          *
          * @param word The word being added to the trie
          */
+
+
         public void add(String word) {
                word = word.toLowerCase();
                recursiveAdd(0, word, mainNode, null);
                mySet.add(word);
-               //remember it has to use lowercase and uppercase
-               //have two stringbuilders, total and current
-               //fix this
         }
 
-        public void recursiveAdd(Integer index, String word, Node[] currNode, Node parentNode) {
+    public void recursiveAdd(Integer index, String word, Node[] currNode, Node parentNode) {
             if (word.length() == index) {
                 parentNode.incrementFreq();
                return;
@@ -46,8 +45,6 @@ public class Trie implements  ITrie{
 
         /**
          * Searches the trie for the specified word
-         *
-         * @param word The word being searched for
          *
          * @return A reference to the trie node that represents the word,
          * 			or null if the word is not in the trie
@@ -105,6 +102,7 @@ public class Trie implements  ITrie{
          * For each word, in alphabetical order:
          * <word>\n
          */
+
         @Override
          public String toString() {
             StringBuilder total = new StringBuilder();
@@ -136,36 +134,6 @@ public class Trie implements  ITrie{
             if (word.length() > 0) {
                 word.setLength(word.length() - 1);
             }
-            /*if (currNode.getValue() > 0) {
-                word.append(currNode.associatedLetter);
-                total.append(word.toString() + '\n'); //if it is a word
-                for (char y = 'a'; y < 'z'; y++) {
-
-                    if (childNodes[y - 'a'] != null) {
-                        RecursiveToString(childNodes[y - 'a'], word, total);
-                    }
-
-                    //modify current stringbuilder to get rid of the last character using length > 0
-
-                }
-            }
-            //else if (currNode != null) {
-            else {
-                word.append(currNode.associatedLetter);
-
-                for (char y = 'a'; y < 'z'; y++) {
-
-                    if (childNodes[y - 'a'] != null) {
-                        RecursiveToString(childNodes[y - 'a'], word, total);
-                    }
-
-                    //modify current stringbuilder to get rid of the last character using length > 0
-
-                }
-            }
-            if (word.length() > 0) {
-                word.setLength(word.length() - 1);
-            }*/
 
             return;
         }
@@ -264,6 +232,7 @@ public class Trie implements  ITrie{
              *
              * @return The frequency count for the word represented by the node
              */
+
             public int getValue() {
 
                 return frequency;
